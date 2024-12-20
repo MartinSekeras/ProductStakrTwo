@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Box Stacking Calculator (3D Heuristic With Weight & File Upload)</title>
+<link rel="stylesheet" href="styles.css">
+
+<!-- Include XLSX library for Excel parsing -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<h1>3D Box Packing Calculator</h1>
+<form id="calcForm">
+  <label for="palletType">Select Pallet/Location Type:</label>
+  <select id="palletType" name="palletType">
+    <option value="singleRack">Single Pallet (Rack) [1000 x 1200 x 1700]</option>
+    <option value="doubleRack">Double Pallet (Rack) [1000 x 2400 x 1700]</option>
+    <option value="mezz">Mezz Location [1300 x 2700 x 1700]</option>
+  </select>
+
+  <!-- Box dimensions and weight in one horizontal line -->
+  <div class="inline-fields">
+    <div class="field-group">
+      <label for="boxWidth">W (mm)</label>
+      <input type="number" id="boxWidth" name="boxWidth" placeholder="200" required />
+    </div>
+    <div class="field-group">
+      <label for="boxLength">L (mm)</label>
+      <input type="number" id="boxLength" name="boxLength" placeholder="300" required />
+    </div>
+    <div class="field-group">
+      <label for="boxHeight">H (mm)</label>
+      <input type="number" id="boxHeight" name="boxHeight" placeholder="150" required />
+    </div>
+    <div class="field-group">
+      <label for="boxWeight">Weight (kg)</label>
+      <input type="number" id="boxWeight" name="boxWeight" placeholder="5" required />
+    </div>
+  </div>
+
+  <!-- Overhang and overload in one horizontal line -->
+  <div class="inline-fields">
+    <div class="field-group">
+      <label for="overhangWidth">Overhang W (mm)</label>
+      <input type="number" id="overhangWidth" name="overhangWidth" value="0" placeholder="170" />
+    </div>
+    <div class="field-group">
+      <label for="overhangLength">Overhang L (mm)</label>
+      <input type="number" id="overhangLength" name="overhangLength" value="0" placeholder="170" />
+    </div>
+    <div class="field-group">
+      <label for="overhangHeight">Overhang H (mm)</label>
+      <input type="number" id="overhangHeight" name="overhangHeight" value="0" placeholder="100" />
+    </div>
+    <div class="field-group">
+      <label for="weightOverload">Overload (kg)</label>
+      <input type="number" id="weightOverload" name="weightOverload" value="0" placeholder="100" />
+    </div>
+  </div>
+
+  <!-- File upload for Excel -->
+  <div class="inline-fields">
+    <div class="field-group">
+      <label for="fileInput">Upload Excel</label>
+      <input type="file" id="fileInput" accept=".xlsx,.xls" />
+    </div>
+  </div>
+
+  <button type="button" id="calculateBtn">Calculate</button>
+</form>
+
+<div class="result" id="result"></div>
+
+<div class="notes">
+    <h1><strong> Update 4 </strong></h1> 
+    <p>Enter single product details to calculate. Optionally upload an Excel file with columns "Width", "Length", "Height", "Weight" to calculate multiple products. Results will appear below.</p>
+</div>
+
+<div class="notes">
+    <h1><strong> Update 3 </strong></h1> 
+    <p>This approach uses a heuristic 3D guillotine packing method. It tries multiple box orientations, splits free spaces after placing boxes, and aims to pack as many boxes as possible. It is still not guaranteed to find the absolute optimal arrangement, but it's more complex than simple arithmetic methods.</p>
+</div>
+
+<div class="notes">
+    <h1><strong> Update 2 </strong></h1> 
+    <p>Added a conceptual backtracking algorithm for 3D bin packing. It may be slow, and it's not guaranteed to find the optimal solution, but it attempts a more "true" 3D bin packing approach than simple heuristics.</p>
+</div>
+
+<div class="notes">
+    <h1><strong> Update 1 </strong></h1> 
+    <p>This calculation takes your chosen pallet/location dimensions, applies your requested overhang to each dimension, and then divides by your box dimensions to determine how many boxes fit in width and length. The number of boxes in height is based on the maximum allowed height minus overhang height, divided by box height.</p>
+    <p>Adjust input values as needed, and click "Calculate" again to see updated results.</p>   
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
